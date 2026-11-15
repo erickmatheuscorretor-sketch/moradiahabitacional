@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { Link } from '@tanstack/react-router';
 import { useServerFn } from '@tanstack/react-start';
-import { ArrowRight, LockKeyhole, CircleCheck, LoaderCircle } from 'lucide-react';
+import { ArrowRight, LockKeyhole, CircleCheck, LoaderCircle, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { interestSchema, maskPhone, states, employmentOptions } from '@/lib/interest-schema';
 import { submitInterest } from '@/lib/interest.functions';
@@ -31,9 +31,15 @@ export function InterestForm() {
     <CircleCheck size={56}/>
     <h3>Interesse cadastrado!</h3>
     <div className="success-fee-box">
-      <p className="success-fee-label">Taxa de inscrição pendente</p>
+      <span className="success-fee-status"><Clock size={13}/> Pagamento pendente</span>
+      <p className="success-fee-label">Taxa de inscrição</p>
       <p className="success-fee-value">R$ 19,00</p>
       <p className="success-fee-cta">Realize o pagamento da taxa e aumente a chance de conseguir sua casa própria quitada!</p>
+      <Button asChild variant="campaign" className="success-pay-btn">
+        <a href="https://pay.kiwify.com.br/oLZI7gb" target="_blank" rel="noopener noreferrer">
+          Realizar pagamento <ArrowRight/>
+        </a>
+      </Button>
     </div>
     <div className="success-mcmv-logo" aria-label="Minha Casa Minha Vida">
       <img
@@ -49,7 +55,7 @@ export function InterestForm() {
         <text x="160" y="64" textAnchor="middle" fill="#FFD000" fontSize="10" fontFamily="sans-serif">Programa Habitacional Federal</text>
       </svg>
     </div>
-    <Button asChild variant="outline">
+    <Button asChild variant="outline" className="success-info-btn">
       <a href="https://www.gov.br/cidades/pt-br/assuntos/minha-casa-minha-vida" target="_blank" rel="noopener noreferrer">
         Consultar informações oficiais <ArrowRight/>
       </a>
