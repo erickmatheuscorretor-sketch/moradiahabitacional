@@ -14,7 +14,60 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      housing_interest: {
+        Row: {
+          birth_date: string
+          city: string
+          consent: boolean
+          consent_version: string
+          created_at: string
+          email: string
+          employment: string
+          full_name: string
+          household_count: number
+          id: string
+          income: number
+          owns_home: boolean
+          phone: string
+          state: string
+          utms: Json
+        }
+        Insert: {
+          birth_date: string
+          city: string
+          consent: boolean
+          consent_version?: string
+          created_at?: string
+          email: string
+          employment: string
+          full_name: string
+          household_count: number
+          id?: string
+          income: number
+          owns_home: boolean
+          phone: string
+          state: string
+          utms?: Json
+        }
+        Update: {
+          birth_date?: string
+          city?: string
+          consent?: boolean
+          consent_version?: string
+          created_at?: string
+          email?: string
+          employment?: string
+          full_name?: string
+          household_count?: number
+          id?: string
+          income?: number
+          owns_home?: boolean
+          phone?: string
+          state?: string
+          utms?: Json
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

@@ -1,0 +1,4 @@
+CREATE TABLE public.housing_interest (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), created_at timestamptz NOT NULL DEFAULT now(), full_name text NOT NULL, birth_date date NOT NULL, phone text NOT NULL, email text NOT NULL, city text NOT NULL, state text NOT NULL, income numeric NOT NULL CHECK (income >= 0), employment text NOT NULL, owns_home boolean NOT NULL, household_count integer NOT NULL CHECK (household_count >= 0), consent boolean NOT NULL CHECK (consent = true), consent_version text NOT NULL DEFAULT '2026-11-15', utms jsonb NOT NULL DEFAULT '{}'::jsonb);
+GRANT ALL ON public.housing_interest TO service_role;
+ALTER TABLE public.housing_interest ENABLE ROW LEVEL SECURITY;
+CREATE INDEX housing_interest_created_idx ON public.housing_interest(created_at DESC);
