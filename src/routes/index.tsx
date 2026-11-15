@@ -1,23 +1,22 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute } from '@tanstack/react-router';
+import { ArrowRight, ArrowUpRight, House, FileCheck2, MapPin, ShieldCheck, LockKeyhole, CircleCheck, Plus, BookOpen, ClipboardList } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Header, Footer } from '@/components/campaign-shell';
+import { InterestForm } from '@/components/interest-form';
+import neighborhood from '@/assets/neighborhood.jpg';
 
-// The home route ships no og:image, so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
-export const Route = createFileRoute("/")({
-  component: Index,
-});
-
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
-}
+export const Route = createFileRoute('/')({ head:()=>({meta:[{title:'Moradia | Seu sonho da casa própria pode estar mais perto'},{name:'description',content:'Informação independente sobre oportunidades habitacionais, critérios e documentos. Cadastre seu interesse gratuitamente, sem garantia de benefício.'},{property:'og:title',content:'Moradia | Um novo começo para sua família'},{property:'og:description',content:'Conheça os caminhos de acesso à moradia e cadastre seu interesse gratuitamente.'},{property:'og:type',content:'website'},{name:'twitter:card',content:'summary_large_image'}]}), component:Index });
+const steps = [ {icon:House,title:'Acesso à moradia',text:'Conheça os programas habitacionais e as condições que podem aproximar sua família da casa própria.',bottom:'Informação para dar o primeiro passo'}, {icon:FileCheck2,title:'Análise de perfil',text:'Entenda os critérios gerais de participação e saiba quais documentos podem ser necessários.',bottom:'Mais clareza sobre os requisitos'}, {icon:MapPin,title:'Acompanhamento',text:'Saiba onde consultar os processos e acompanhar as oportunidades disponíveis em sua região.',bottom:'Os caminhos para se manter informado'} ];
+function Index() { return <><Header/><main>
+<section className="hero"><img src={neighborhood} width={1920} height={1024} alt="Imagem ilustrativa de uma família caminhando por um conjunto de casas coloridas" className="hero-image" fetchPriority="high"/><div className="page-width hero-inner"><div className="hero-copy"><div className="hero-badge"><span/> OPORTUNIDADES HABITACIONAIS 2027</div><h1>SEU SONHO DA<br/>CASA PRÓPRIA<br/>PODE ESTAR<br/><em>MAIS PERTO!</em></h1><p className="hero-description">Conheça as oportunidades habitacionais, os critérios de participação e as condições dos programas de acesso à moradia.</p><Button variant="campaign" className="hero-cta" asChild><a href="#cadastro">QUERO CADASTRAR MEU INTERESSE <ArrowRight size={19}/></a></Button><p className="hero-note"><ShieldCheck size={14}/> Cadastro gratuito • Informação independente • Sem compromisso</p></div></div><span className="image-caption">Imagem ilustrativa. Não representa oferta de imóveis.</span></section>
+<div className="trust-strip"><div className="page-width trust-inner">{[{icon:House,title:'Um novo começo para sua família',text:'Conheça os caminhos de acesso à moradia'},{icon:ShieldCheck,title:'Informação com transparência',text:'Critérios e orientações, sem falsas promessas'},{icon:LockKeyhole,title:'Seus dados protegidos',text:'Respeito à sua privacidade em cada etapa'}].map(item=><div className="trust-item" key={item.title}><item.icon/><div>{item.title}<small>{item.text}</small></div></div>)}</div></div>
+<section className="section" id="como-funciona"><div className="page-width"><div className="section-heading"><span className="eyebrow">INFORMAÇÃO É O PRIMEIRO PASSO</span><h2>Como funcionam as<br/>oportunidades habitacionais?</h2><p>Entenda o caminho. Conheça os critérios. Prepare o seu próximo passo.</p></div><div className="steps">{steps.map((step,i)=><article className="step" key={step.title}><div className="step-top"><span className="icon-tile"><step.icon size={25}/></span><span className="step-number">0{i+1}</span></div><h3>{step.title}</h3><p>{step.text}</p><span className="step-bottom"><CircleCheck size={14}/>{step.bottom}</span></article>)}</div></div></section>
+<section className="registration" id="cadastro"><div className="page-width registration-grid"><div className="registration-info"><span className="eyebrow">UM PASSO EM DIREÇÃO AO SEU SONHO</span><h2>Faça seu cadastro<br/>de interesse.</h2><p>Preencha seus dados para receber informações sobre oportunidades habitacionais disponíveis.</p><div className="benefit-list">{[{icon:BookOpen,title:'Informação que faz a diferença',text:'Orientações sobre programas e condições de acesso.'},{icon:ClipboardList,title:'Mais preparo, menos dúvidas',text:'Conheça os documentos e os critérios gerais.'},{icon:ShieldCheck,title:'Transparência em primeiro lugar',text:'Sem promessa de aprovação ou entrega de imóvel.'}].map(b=><div className="benefit" key={b.title}><b.icon size={21}/><div><strong>{b.title}</strong><span>{b.text}</span></div></div>)}</div><div className="independent-note"><strong>Importante saber</strong><br/>Esta é uma iniciativa independente. O cadastro de interesse não substitui a inscrição nos canais oficiais e não garante acesso a benefícios habitacionais.</div></div><InterestForm/></div></section>
+<section className="section" id="orientacoes"><div className="page-width guidance-grid"><div className="guidance-intro"><span className="eyebrow">INFORMAÇÃO PARA DECIDIR MELHOR</span><h2>Seu sonho merece<br/>informação de confiança.</h2><p>Antes de dar o próximo passo, conheça as orientações e consulte sempre os canais oficiais.</p><a className="official-link" href="https://www.gov.br/cidades/pt-br/assuntos/minha-casa-minha-vida" target="_blank" rel="noopener noreferrer">Consultar o portal oficial <ArrowUpRight size={17}/></a></div><div>
+<details className="faq" open><summary>Como consultar os programas habitacionais? <Plus/></summary><p>Consulte o Ministério das Cidades, a Caixa e a Secretaria de Habitação da sua cidade. Cada modalidade possui regras próprias; confirme as condições e os canais de inscrição diretamente com o órgão responsável.</p></details>
+<details className="faq"><summary>Quais documentos podem ser necessários? <Plus/></summary><p>Documento de identificação, CPF, comprovantes de renda e residência, documentos do núcleo familiar e, quando aplicável, informações do Cadastro Único. A lista exata depende do programa e do órgão responsável. Não envie documentos por esta página.</p></details>
+<details className="faq"><summary>Como acompanhar os processos de seleção? <Plus/></summary><p>Acompanhe os editais e comunicados da sua Prefeitura ou Secretaria de Habitação. Confirme prazos, protocolos e resultados nos canais oficiais. Este site não realiza seleção de beneficiários.</p></details>
+<details className="faq"><summary>Onde encontro informações oficiais? <Plus/></summary><p>No <a href="https://www.gov.br/cidades/pt-br/assuntos/minha-casa-minha-vida" target="_blank" rel="noopener noreferrer">Ministério das Cidades</a>, no <a href="https://www.caixa.gov.br/voce/habitacao/minha-casa-minha-vida/Paginas/default.aspx" target="_blank" rel="noopener noreferrer">site da Caixa</a> e nos canais da Prefeitura da sua cidade. Não pague terceiros com a promessa de garantir inscrição, aprovação ou prioridade.</p></details>
+</div></div></section>
+<section className="closing-band"><div className="page-width closing-inner"><div><h2>Toda conquista começa com um primeiro passo.</h2><p>Comece com informação. Cadastre seu interesse.</p></div><Button variant="campaign" asChild><a href="#cadastro">QUERO CADASTRAR MEU INTERESSE <ArrowRight/></a></Button></div></section>
+</main><Footer/></>; }

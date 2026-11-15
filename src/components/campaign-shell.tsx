@@ -1,0 +1,7 @@
+import { Link } from '@tanstack/react-router';
+import { House, ArrowUpRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+
+export function Brand() { return <Link to="/" className="brand"><span className="brand-icon"><House size={25} strokeWidth={2.2}/></span><span>moradia<span className="brand-dot">.</span><small>INFORMAÇÃO QUE APROXIMA</small></span></Link>; }
+export function Header() { return <header className="site-header"><div className="page-width header-inner"><Brand/><nav aria-label="Navegação principal"><a href="/#como-funciona">Como funciona</a><a href="/#orientacoes">Informações importantes</a></nav><Button variant="campaign" asChild><a href="/#cadastro">Cadastrar interesse <ArrowUpRight/></a></Button></div></header>; }
+export function Footer() { return <footer className="site-footer"><div className="page-width"><div className="footer-top"><Brand/><p>Um novo começo passa por<br/>informação de confiança.</p><div className="footer-links"><Link to="/privacidade">Política de privacidade</Link><Link to="/termos">Termos de uso</Link><Link to="/contato">Contato</Link></div></div><div className="footer-bottom"><p>Iniciativa independente. Não representa o Governo Federal, o Minha Casa, Minha Vida, a Caixa ou qualquer Prefeitura. O cadastro não é uma inscrição em programa público e não garante benefício, aprovação ou imóvel.</p><span>© {new Date().getFullYear()} Moradia. Informação independente.</span></div></div></footer>; }

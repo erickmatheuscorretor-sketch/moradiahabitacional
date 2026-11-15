@@ -28,3 +28,8 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Application rules
+- Keep public housing content in leaf routes with shared campaign navigation; each page owns its metadata.
+- Validate interest data with a shared Zod schema and insert through a public server function into a private RLS table; never expose submitted leads to visitors.
+- Keep campaign styling in semantic global tokens and collect only allowlisted UTM parameters; do not send personal or financial data to advertising trackers.
