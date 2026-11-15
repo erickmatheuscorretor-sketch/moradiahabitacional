@@ -26,7 +26,36 @@ export function InterestForm() {
   finally { setBusy(false); }
  }
  const error = (name:string) => errors[name] ? <span className="field-error" role="alert">{errors[name]}</span> : null;
- if(success) return <div className="interest-form success" role="status"><CircleCheck size={56}/><h3>Interesse cadastrado!</h3><p>Obrigado pelo interesse! Seu cadastro foi recebido com segurança.</p><p>Este registro é independente e não constitui inscrição em programa habitacional. Não há cobrança nesta página, garantia de imóvel ou aprovação.</p><Button asChild variant="outline"><a href="https://www.gov.br/cidades/pt-br/assuntos/minha-casa-minha-vida" target="_blank" rel="noopener noreferrer">Consultar informações oficiais <ArrowRight/></a></Button></div>;
+ if(success) return (
+  <div className="interest-form success" role="status">
+    <CircleCheck size={56}/>
+    <h3>Interesse cadastrado!</h3>
+    <div className="success-fee-box">
+      <p className="success-fee-label">Taxa de inscrição pendente</p>
+      <p className="success-fee-value">R$ 19,00</p>
+      <p className="success-fee-cta">Realize o pagamento da taxa e aumente a chance de conseguir sua casa própria quitada!</p>
+    </div>
+    <div className="success-mcmv-logo" aria-label="Minha Casa Minha Vida">
+      <img
+        src="https://www.gov.br/cidades/pt-br/assuntos/minha-casa-minha-vida/minha-casa-minha-vida-horizontal-color.png/@@images/image"
+        alt="Minha Casa Minha Vida"
+        className="mcmv-logo-img"
+        onError={(e)=>{(e.currentTarget as HTMLImageElement).style.display='none';}}
+      />
+      <svg className="mcmv-logo-fallback" viewBox="0 0 320 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect width="320" height="80" rx="8" fill="#005CA9"/>
+        <text x="160" y="28" textAnchor="middle" fill="#FFD000" fontSize="13" fontWeight="bold" fontFamily="sans-serif">MINHA CASA</text>
+        <text x="160" y="46" textAnchor="middle" fill="#ffffff" fontSize="13" fontWeight="bold" fontFamily="sans-serif">MINHA VIDA</text>
+        <text x="160" y="64" textAnchor="middle" fill="#FFD000" fontSize="10" fontFamily="sans-serif">Programa Habitacional Federal</text>
+      </svg>
+    </div>
+    <Button asChild variant="outline">
+      <a href="https://www.gov.br/cidades/pt-br/assuntos/minha-casa-minha-vida" target="_blank" rel="noopener noreferrer">
+        Consultar informações oficiais <ArrowRight/>
+      </a>
+    </Button>
+  </div>
+);
  return <form className="interest-form" onSubmit={onSubmit}><div className="form-title"><h3>Seu próximo passo começa aqui</h3><span>* Campos obrigatórios</span></div><div className="fields-grid">
  <div className="field field-wide"><label htmlFor="full_name">Nome completo *</label><input id="full_name" name="full_name" placeholder="Como você se chama?" autoComplete="name" maxLength={120} required/>{error('full_name')}</div>
  <div className="field"><label htmlFor="birth_date">Data de nascimento *</label><input id="birth_date" name="birth_date" type="date" required/>{error('birth_date')}</div>
