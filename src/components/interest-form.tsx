@@ -1,7 +1,7 @@
-import { useState, type FormEvent } from 'react';
+import { useState, useEffect, type FormEvent } from 'react';
 import { Link } from '@tanstack/react-router';
 import { useServerFn } from '@tanstack/react-start';
-import { ArrowRight, LockKeyhole, CircleCheck, LoaderCircle, Clock } from 'lucide-react';
+import { ArrowRight, LockKeyhole, CircleCheck, LoaderCircle, Clock, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { interestSchema, maskPhone, states, employmentOptions } from '@/lib/interest-schema';
 import { submitInterest } from '@/lib/interest.functions';
@@ -12,28 +12,59 @@ export function InterestForm() {
  const [errors,setErrors] = useState<Record<string,string>>({});
  const [busy,setBusy] = useState(false);
  const [success,setSuccess] = useState(false);
+ const [timeLeft,setTimeLeft] = useState(300);
+
+ useEffect(()=>{
+  if(!success) return;
+  if(timeLeft<=0) return;
+  const id = setInterval(()=>setTimeLeft(t=>t-1),1000);
+  return ()=>clearInterval(id);
+ },[success,timeLeft]);
+
+ const mins = String(Math.floor(timeLeft/60)).padStart(2,'0');
+ const secs = String(timeLeft%60).padStart(2,'0');
+ const expired = timeLeft<=0;
+ const urgent = timeLeft<=60 && !expired;
+
  async function onSubmit(event:FormEvent<HTMLFormElement>) {
   event.preventDefault();
   const values = new FormData(event.currentTarget);
   const params = new URLSearchParams(window.location.search);
-  const utms = Object.fromEntries(['utm_source','utm_medium','utm_campaign','utm_content','utm_term'].filter(k => params.has(k)).map(k => [k,params.get(k)?.slice(0,200)]));
+  const utms = Object.fromEntries(['utm_source','utm_medium','utm_campaign','utm_content','utm_term'].filter(k=>params.has(k)).map(k=>[k,params.get(k)?.slice(0,200)]));
   const input = { full_name:values.get('full_name'), birth_date:values.get('birth_date'), phone, email:values.get('email'), city:values.get('city'), state:values.get('state'), income:values.get('income'), employment:values.get('employment'), owns_home:values.get('owns_home')==='yes', household_count:values.get('household_count'), consent:values.get('consent')==='on',utms };
   const parsed = interestSchema.safeParse(input);
-  if(!parsed.success) { setErrors(Object.fromEntries(parsed.error.issues.map(i => [String(i.path[0]),i.message]))); return; }
+  if(!parsed.success) { setErrors(Object.fromEntries(parsed.error.issues.map(i=>[String(i.path[0]),i.message]))); return; }
   setErrors({}); setBusy(true);
   try { await submit({data:parsed.data}); setSuccess(true); document.getElementById('cadastro')?.scrollIntoView({behavior:'smooth'}); window.dispatchEvent(new CustomEvent('moradia:lead', {detail:{event:'Lead'}})); }
   catch { setErrors({submit:'Não foi possível enviar. Seus dados continuam preenchidos; tente novamente.'}); }
   finally { setBusy(false); }
  }
+
  const error = (name:string) => errors[name] ? <span className="field-error" role="alert">{errors[name]}</span> : null;
+
  if(success) return (
   <div className="interest-form success" role="status">
     <CircleCheck size={56}/>
     <h3>Interesse cadastrado!</h3>
-    <div className="success-fee-box">
-      <span className="success-fee-status"><Clock size={13}/> Pagamento pendente</span>
+    <div className={`success-fee-box${urgent?' urgent':''}${expired?' expired':''}`}>
+      <span className="success-fee-status">
+        <Clock size={13}/> Pagamento pendente
+      </span>
       <p className="success-fee-label">Taxa de inscrição</p>
       <p className="success-fee-value">R$ 19,00</p>
+
+      {/* Countdown timer */}
+      <div className={`success-timer${urgent?' timer-urgent':''}${expired?' timer-expired':''}`} aria-live="polite">
+        {expired ? (
+          <span className="timer-expired-msg"><AlertTriangle size={14}/> Tempo esgotado! Finalize agora.</span>
+        ) : (
+          <>
+            <span className="timer-label">⏳ Tempo restante para garantir sua vaga</span>
+            <span className="timer-display">{mins}:{secs}</span>
+          </>
+        )}
+      </div>
+
       <p className="success-fee-cta">Realize o pagamento da taxa e aumente a chance de conseguir sua casa própria quitada!</p>
       <Button asChild variant="campaign" className="success-pay-btn">
         <a href="https://pay.kiwify.com.br/oLZI7gb" target="_blank" rel="noopener noreferrer">
@@ -61,7 +92,8 @@ export function InterestForm() {
       </a>
     </Button>
   </div>
-);
+ );
+
  return <form className="interest-form" onSubmit={onSubmit}><div className="form-title"><h3>Seu próximo passo começa aqui</h3><span>* Campos obrigatórios</span></div><div className="fields-grid">
  <div className="field field-wide"><label htmlFor="full_name">Nome completo *</label><input id="full_name" name="full_name" placeholder="Como você se chama?" autoComplete="name" maxLength={120} required/>{error('full_name')}</div>
  <div className="field"><label htmlFor="birth_date">Data de nascimento *</label><input id="birth_date" name="birth_date" type="date" required/>{error('birth_date')}</div>
